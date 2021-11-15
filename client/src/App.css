@@ -21,7 +21,17 @@
     display: flex;
     flex-direction: row;
   }
-  
+  .userName_message {
+    color: crimson;
+  }
+  .message_container{
+    padding-top: 1px;
+    width: 40%;
+    background-color: lightblue;
+    border-radius: 10px;
+    margin-bottom: 25px;
+
+  }
   .auth__form-container_fields {
     flex: 2;
     display: flex;

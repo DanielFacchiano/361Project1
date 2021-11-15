@@ -19,8 +19,8 @@ const TeamMessage = (Message, i) => {
         isUrl = true
     }
 
-    var imgUrl = "22"
-
+    var imgUrl = ""
+    console.log(message.user.name)
     if (isUrl){
         console.log("hello")
 		var req = new XMLHttpRequest();
@@ -40,12 +40,14 @@ const TeamMessage = (Message, i) => {
 				console.log("Error (did you put blank input?)"+req.statusText);
 			}
 		});
-        req.send(JSON.stringify(payload));
-        
+        req.send(JSON.stringify(payload));   
     }
-
+    
     return (
-        <div>
+        <div className="message_container">
+            <p className="userName_message">
+            {message.user.name}:
+            </p>
             {message.text} 
  
             {isUrl ? <div><a href={message.text}>  <img src={imageUrl} width="150" height="100" ></img></a> </div>: ''}
