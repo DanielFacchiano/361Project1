@@ -1,61 +1,107 @@
 import React, { useState } from 'react';
-import { MessageList, MessageInput, Thread, Window, useChannelActionContext, Avatar, useChannelStateContext, useChatContext } from 'stream-chat-react';
+import { MessageList, MessageInput, Thread,  useChannelActionContext, useChannelStateContext, useChatContext, Window} from 'stream-chat-react';
+// This component is made up of a bunch of stream chat components
+import {ChannelInfo} from '../Stuff/ChannelInfo'
 
-import { ChannelInfo } from '../assets';
+export const Contexto = React.createContext({});
+//.team-channel-header__name-wrapper {
+ 
+var ListHeaderStyle = {
+  flex: "3",
+  display: "flex",
+  alignItems: "center",
+  overflowX: "auto",
+  maxWidth: "520px",
+  whiteSpace: "nowrap",
+  scrollbarWidth: "none",
 
-export const GiphyContext = React.createContext({});
+};
 
-const ChannelInner = ({ setIsEditing }) => {
-  const [giphyState, setGiphyState] = useState(false);
-  const { sendMessage } = useChannelActionContext();
+var multi_header ={
+  display: "flex",
+  alignItems: "center",
+  marginRight: "9px"
+}
+
+var channel_header=
+{
+  fontFamily: "sans-serif",
+  fontWeight: "bold",
+  fontSize: "18px",
+  color: "#2c2c30",
+  marginRight: "8px"
+}
+
+var right_text = {
+  fontFamily:"sans-serif",
+  fontSize: "14px",
+  color: "#858688"
+}
+
+
+var right_text_inner= {
+  display: "flex",
+  paddingLeft: "12px"
+}
+
+var header_container=
+{
+  height: "72px"
+}
+
+
+function ChannelInner({ setOpenOptions }){
+
+  const [messageState, setMessageState] = useState(false);
+
+  const { postMessage } = useChannelActionContext();
   
-  const overrideSubmitHandler = (message) => {
-    let updatedMessage = {
-      attachments: message.attachments,
+  const SubmitHandler = (message) => {
+    var updatedMessage = {
       mentioned_users: message.mentioned_users,
-      parent_id: message.parent?.id,
-      parent: message.parent,
       text: message.text,
+      parent: message.parent,
+      parent_id: message.parent?.id,
+      attachments: message.attachments,
     };
     
-    if (giphyState) {
+    if (messageState == true) {
       updatedMessage = { ...updatedMessage, text: `/giphy ${message.text}` };
     }
     
-    if (sendMessage) {
-      sendMessage(updatedMessage);
-      setGiphyState(false);
+    if (postMessage == true) {
+      postMessage(updatedMessage);
+      setMessageState(false);
     }
   };
 
   return (
-    <GiphyContext.Provider value={{ giphyState, setGiphyState }}>
+    <Contexto.Provider value={{ messageState, setMessageState }}>
       <div style={{ display: 'flex', width: '100%' }}>
         <Window>
-          <TeamChannelHeader setIsEditing={setIsEditing} />
+          <TeamChannelHeader setOpenOptions={setOpenOptions} />
           <MessageList />
-          <MessageInput overrideSubmitHandler={overrideSubmitHandler} />
+          <MessageInput SubmitHandler={SubmitHandler} />
         </Window>
         <Thread />
       </div>
-    </GiphyContext.Provider>
+    </Contexto.Provider>
   );
 };
 
-const TeamChannelHeader = ({ setIsEditing }) => {
-    const { channel, watcher_count } = useChannelStateContext();
-    const { client } = useChatContext();
+const TeamChannelHeader = ({ setOpenOptions }) => {
+    var { channel, watcher_count } = useChannelStateContext();
+    var { client } = useChatContext();
   
     const MessagingHeader = () => {
       const members = Object.values(channel.state.members).filter(({ user }) => user.id !== client.userID);
   
       if(channel.type === 'messaging') {
         return (
-          <div className='team-channel-header__name-wrapper'>
+          <div style={ListHeaderStyle}>
             {members.map(({ user }, i) => (
-              <div key={i} className='team-channel-header__name-multi'>
-                <Avatar image={user.image} name={user.fullName || user.id} size={32} />
-                <p className='team-channel-header__name user'>{user.fullName || user.id}</p>
+              <div key={i} style={multi_header}>
+                <p>{user.fullName}</p>
               </div>
             ))}
           </div>
@@ -63,23 +109,27 @@ const TeamChannelHeader = ({ setIsEditing }) => {
       }
   
       return (
-        <div className='team-channel-header__channel-wrapper'>
-          <p className='team-channel-header__name'>Group: {channel.data.name} || Code: </p>
+        <div className='channel-inner-header-wrap2'>
+          <p style={channel_header}>Group: {channel.data.name} || Code: </p>
+          <span style={{ display: 'flex' }} onClick={() => setOpenOptions(true)}>
+            <ChannelInfo />
+          </span>
         </div>
       );
     };
   
     const getWatcherText = (watchers) => {
-      if (!watchers) return 'No users online';
-      if (watchers === 1) return '1 user online';
-      return `${watchers} users online`;
+      if (!watchers) return 'Nobody is online';
+      else{
+      return `${watchers} users online in group`;
+    }
     };
   
     return (
-      <div className='team-channel-header__container'>
+      <div style={header_container}>
         <MessagingHeader />
-        <div className='team-channel-header__right'>
-          <p className='team-channel-header__right-text'>{getWatcherText(watcher_count)}</p>
+        <div style={right_text_inner}>
+          <p style={right_text}>{getWatcherText(watcher_count)}</p>
         </div>
       </div>
     );
