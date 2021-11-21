@@ -29,7 +29,7 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
             </div>
         )
     }
-    
+    //We return the correct titlte and button for the channels list
     return (
         <div>
             <div>

@@ -6,42 +6,38 @@ import ChannelOptions from './ChannelOptions';
 import TeamMessage from './TeamMessage';
 import ChannelInner from './ChannelInner';
 
-
+// style for main chat page container for all states
 var channelStyle = {
     height: "100%",
     width: "100%",
   };
 
+  // Chat history style
 var EmptyChannelStyle = {
     display: "flex",
     height: "100%",
     flexDirection: "column",
-    justifyContent: "flex-end",
-    marginLeft: "20px",
-    marginRight: "20px",
-    paddingBottom: "20px"
   };
-
+// for previous history messages
   var EmptyChannelParagraphStyle = {
     fontFamily: "sans-serif",
     fontWeight: "bold",
     fontSize: "18px",
-    lineHeight: "120%",
-    color: "#2c2c30",
     marginBottom: "10px"
   };
+  //send preview style
   var EmptyChannelParagraphTwoStyle = {
     fontSize: "14px",
     lineHeight: "120%",
     margin: "0",
-    color: "#858688"
   };
-
+//CHat page component function, has various state change props
 function ChatPage(
     { newChannel, openOptions, setNewChannel, setOpenOptions, createType }
     ) {
+        //get channel from context
     const { channel } = useChatContext();
-
+//if new channel, return the createChannel component
     if(newChannel){
         return(
             <div style={channelStyle}>
@@ -49,7 +45,7 @@ function ChatPage(
             </div>
         )
     }
-
+//if the option state is true, open the options component
     if(openOptions){
         return(
             <div style={channelStyle}>
@@ -57,14 +53,15 @@ function ChatPage(
             </div>
         )
     }
-
+    //needed for stream api channel component to function
     const noState=() => (
         <div style={EmptyChannelStyle}>
             <p style={EmptyChannelParagraphStyle}>Chat History Start: </p>
             <p style={EmptyChannelParagraphTwoStyle}>Send stuff</p>
         </div>
     )
-
+        // Set up chat page, messages for message list provided by message props passed into Built team message
+        // component. Pass options to inner for option opening via title button
     return (
         <div style={channelStyle}>
             <Channel

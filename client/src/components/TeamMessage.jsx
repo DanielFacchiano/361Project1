@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { MessageTeam, useMessageContext } from 'stream-chat-react';
+// Url to teamates image scraping service
 const urlStr = 'https://scrape.quin.fish/';
 
-
+//message component
 const TeamMessage = (Message, i) => {
+    //retrieve the message we are building a component for
     const { handleOpenThread, message } = useMessageContext();
     const [imageUrl, setImageUrl] = useState('1111');
-   
+   //set image state to new url
     const setImg = (newUrl) => {
         setImageUrl(newUrl);
       } 
 
-
+    //rudimentary url detection
     var lastFive = message.text.substr(message.text.length - 4);
     var firstFive = message.text.substr(0, 4);
     var isUrl = false
@@ -21,6 +23,8 @@ const TeamMessage = (Message, i) => {
 
     var imgUrl = ""
     console.log(message.user.name)
+
+    //if it is a url, we will make a request to my teamates service
     if (isUrl){
         console.log("hello")
 		var req = new XMLHttpRequest();
@@ -30,10 +34,11 @@ const TeamMessage = (Message, i) => {
 		req.setRequestHeader('Content-Type', 'application/json');
 		req.addEventListener('load', function(){
 			if(req.status>= 200 && req.status < 400){
+                //we get a response image, we build the image link with the response image
 				var response = JSON.parse(req.responseText);	//Creates array of rows, super helpful for front end
 				console.log(response.data.images[0]);// log to console what we got back
                 imgUrl=response.data.images[0]
-                setImg(imgUrl)
+                setImg(imgUrl)              
 
 			}
 			else{
@@ -42,7 +47,7 @@ const TeamMessage = (Message, i) => {
 		});
         req.send(JSON.stringify(payload));   
     }
-    
+    //build message component, with username and message container
     return (
         <div className="message_container">
             <p className="userName_message">

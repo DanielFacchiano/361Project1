@@ -3,6 +3,7 @@ import {useState} from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
+// secondary container, contains background
 var SignInInputs = {
     flex: "1",
     display: "flex",
@@ -12,12 +13,13 @@ var SignInInputs = {
     justifyContent: "center"
   }
 
+  // Main container for this page
 var SignInContainerStyle = {
     minHeight: "100vh",
     display: "flex",
     flexDirection: "row"
   };
-
+// style for the box fields are contained within
   var SignUpText = {
     display: "flex",
     padding: "24px",
@@ -26,23 +28,21 @@ var SignInContainerStyle = {
     flexDirection: "column"
 
   }
-  var switchStyle = {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: "0.2rem"
-  }
 
+
+// style for the text of the switch button
   var buttonColor = {
       color : "blue",
       cursor: "pointer"
   }
-
+// style for the button wrapper
   var buttonHolderStyle= {
     marginTop: "2rem",
     display: "flex",
     justifyContent: "flex-start"
   }
+  
+  //style for sign in/ sign up buton
   var buttonStyle={
     borderRadius: "4px",
     background: "#000000",
@@ -60,7 +60,7 @@ var SignInContainerStyle = {
     password: '',
     confirmPassword:''
 }
-
+//get our cookies instance
 const cookies = new Cookies();
 
 function SignIn() {
@@ -77,6 +77,9 @@ function SignIn() {
         setFields({...fields, [e.target.name]: e.target.value })
 
     }
+    // function to submit new users/ sign in info
+    // we send front end info into our server which sends it to the stream chat api server
+    // we also set our cookies to the users data
     async function handleSubmit(e){
         e.preventDefault();
 
@@ -89,7 +92,7 @@ function SignIn() {
         cookies.set('username', username)
         cookies.set('fullName', fullName)
         cookies.set('userId', userId)
-
+        //sign up needs the hashed pw
         if(!signIn){
             cookies.set('hashedPassword', hashedPassword)   
         }
@@ -97,7 +100,7 @@ function SignIn() {
         window.location.reload();
 
     }
-
+    // The various html to lay out the sign in/ sign up page
     return (
         <div style={SignInContainerStyle}>
             <div style={SignInInputs}>
@@ -156,7 +159,7 @@ function SignIn() {
                             
                         </div>
                     </form>
-                    <div style={switchStyle}>
+                    <div >
                         <p>
                             {signIn ? "Go to Sign Up Page:" : "Go to Sign In Page:"}
                             <div style ={buttonColor}onClick={nextMode}>

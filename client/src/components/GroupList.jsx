@@ -5,18 +5,15 @@ import icon1 from '../Stuff/icon1.png'
 import icon2 from '../Stuff/icon2.png'
 import icon3 from '../Stuff/icon3.png'
 
-import GroupFinder from './GroupFinder';
 import Groups from './Groups';
-import PreList from './PreList';
 const cookies = new Cookies();
 
-
-//channel-list__container
+// component container style
 var listStyle = {
     display: "flex",
     height: "100%"
 }
-
+//Style for the header at the top of groupList
 var ListHeaderStyle = {
     color: 'red',
     padding: "0 20px",
@@ -33,7 +30,7 @@ var titleStyle = {
     fontSize: "18px",
     lineHeight: "28px",
 }
-
+// Function returns the header 
 function ListHeader(){ 
     return (
     <div style={ListHeaderStyle}>
@@ -42,7 +39,7 @@ function ListHeader(){
     </div>
     )
 }
-
+// function holds the image icons in the sidebars buttonbar. Buttons are chat icon, options Cog, and logout symbol
 function IconsHolder({logout, opts}) {
     return (
     <div className="icon_side_container">
@@ -58,11 +55,11 @@ function IconsHolder({logout, opts}) {
     </div>
     )
 }
-
+//custom filters for the stream chat ChannelList object, returns channels where type is eam
 function channelFilter(channels){
     return channels.filter((channel) => channel.type === 'team' ) // Return channels where the type is team
 }
-
+//custom filters for the stream chat ChannelList object, returns channels where type is messaging
 function messageFilter(channels){
     return channels.filter((channel) => channel.type === 'messaging' ) // Return channels where the type is team
 }
@@ -74,11 +71,11 @@ function messageFilter(channels){
 // First preview shows groups, the second shows direct messaging
 function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
     const { client} = useChatContext();
-
+// toggle options state on off with the cog symbol
     function opts() {
         setOpenOptions(!openOptions)
     }
-
+//to logout, we simply clear the cookies. The login page in app.jsx will now trigger, reinitiating sign in
     function logout(){
         cookies.remove('token');
         cookies.remove('username');
@@ -87,16 +84,15 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
         cookies.remove('hashedPassword');
         window.location.reload();
     }
-
+// Filter out channels that don't have the user as a member (get users channels)
     const filters = { members:{$in: [client.userID]}} //Get all channels where our current user is in it
 
-
+//return the components and there props to form our main grouplist sidebar component
     return (
         <>
            <IconsHolder logout={logout} opts={opts} />
             <div className ="group-list-wrapper"> 
                <ListHeader />
-               <GroupFinder /> 
                <ChannelList
                     filters={filters}
                     GroupList   channelRenderFilterFn={channelFilter}
@@ -125,20 +121,13 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
                             setOpenOptions={setOpenOptions}
                         />
                     )}
-                    /*
-                    Preview={(previewProps) => (
-                        <PreList
-                            {... previewProps}
-                            type="messaging"
-                        />
-                    )}
-                    */
+
                />
             </div>
         </>
     )
 }
-
+// Previously required for removed feature, essentially just rengers the grouplistContent component now
 function GroupList({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
     const[toggleContainer, setToggleContainer] = useState(false)
     return(

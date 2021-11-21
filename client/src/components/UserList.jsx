@@ -23,7 +23,7 @@ var channelStyle = {
     margin: "0px 20px",
     justifyContent: "space-between"
   };
-
+  // style for user list wrapper
   var ListItemUserWrapperName={
     display: "flex",
     alignItems: "center",
@@ -31,6 +31,7 @@ var channelStyle = {
     textAlign: "left"
   };
 
+  // style for the  user list invite box
   var emptyCheck = {
     height: "28px",
     width: "28px",
@@ -43,7 +44,7 @@ var channelStyle = {
   }
 
 
-
+// Wrapper for the list, has access to children, to bring rendered components down to render list in this component
 function MasterList({ children }){
     return(
         <div style={channelStyle}>
@@ -56,7 +57,7 @@ function MasterList({ children }){
     )
 }
 
-
+// Function to generate items appearing in the list
 function ListItemUser({ user, setCheckedUsers}){
     const [checked, setChecked] = useState(false)
     function detectCheck(){
@@ -69,9 +70,10 @@ function ListItemUser({ user, setCheckedUsers}){
             setCheckedUsers((prevUsers) => [...prevUsers, user.id])
         }
 
-
+        //When clicking, we set checked to the opposite of what is currently checked
         setChecked(!checked)
     }
+    // Return name or ID, render either the empty check or the checked svg if the checked state is active
     return(
         <div style={ListItemUserWrapper} onClick={detectCheck}>
             <div style={ListItemUserWrapperName}>
@@ -86,15 +88,21 @@ function ListItemUser({ user, setCheckedUsers}){
 
 
 function UserList({setCheckedUsers}){ 
+    // get client instance
     const {client} = useChatContext()
+    // state for user list
     const [users, setUsers] = useState([]);
+    // State for loading user list
     const [loading, setLoading] = useState(false);
+    //state for no users
     const [empty, setEmpty] = useState(false);
+    //errir detectuib state
     const [err, setErr] = useState(false)
 
+    // needed for async requests in this instance, render the user list once after users returned
     useEffect(()=> {
         const getUsers = async () => {
-            if(loading) return //If we are already getting the lost, don't keep trying to get it
+            if(loading) return //If we are already getting the list, don't keep trying to get it
             //loading set to true for the try catch block, where we query users from stream chat 
             setLoading(true) 
             
@@ -119,7 +127,7 @@ function UserList({setCheckedUsers}){
         }
 
         if(client) getUsers()
-
+//empty array ensures use effect only runs after the first render is detected
     },[])
     if(err){
         return (<MasterList>
@@ -127,14 +135,14 @@ function UserList({setCheckedUsers}){
         </MasterList>
         )
     }
-
+    // display is user list is empty
     if(empty){
         return (<MasterList>
           <div> No members available </div>
         </MasterList>
         )
     }
-
+    //return the master list component wrapping a list item generated for ever user present in the users state array
     return (
     <MasterList>
         {loading ? 
