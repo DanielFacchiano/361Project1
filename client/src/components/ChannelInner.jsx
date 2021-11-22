@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { MessageList, MessageInput, Thread,  useChannelActionContext, useChannelStateContext, useChatContext, Window} from 'stream-chat-react';
 // This component is made up of a bunch of stream chat components
 import {ChannelInfo} from '../Stuff/ChannelInfo'
-// component from stream chat api
+
+// component from stream chat api, needed to update context after channel creation
 export const Contexto = React.createContext({});
 // .team-channel-header__name-wrapper {
  // Style for the header,
 
+ //quick style to flex stuff
+ var quick_flex ={
+  display: 'flex'
+ }
 
 // Style for the group channel title and header
 var channel_header=
@@ -40,11 +45,10 @@ var header_container=
 function ChannelInner({ setOpenOptions }){
 
   // State to determine if 
-  const [messageState, setMessageState] = useState(false);
-
   const { postMessage } = useChannelActionContext();
-  // required handler for the stream chat message component
-  const SubmitHandler = (message) => {
+
+  // required handler for the free stream chat messaging component.
+  function SubmitHandler (message)  {
     var updatedMessage = {
       mentioned_users: message.mentioned_users,
       text: message.text,
@@ -53,15 +57,14 @@ function ChannelInner({ setOpenOptions }){
       attachments: message.attachments,
     };
 
-    
+    // Post message posts the message object to the current channel
     if (postMessage == true) {
       postMessage(updatedMessage);
-      setMessageState(false);
     }
   };
 // Get the components that make up our main chat page. We have a header, a message list, and an input for messages. all from the api
+// Context provider 
   return (
-    <Contexto.Provider value={{ messageState, setMessageState }}>
       <div style={{ display: 'flex', width: '100%' }}>
         <Window>
           <TeamChannelHeader setOpenOptions={setOpenOptions} />
@@ -70,18 +73,15 @@ function ChannelInner({ setOpenOptions }){
         </Window>
         <Thread />
       </div>
-    </Contexto.Provider>
   );
 };
 // Channel Header component, derefrence components from chat and channel contexts for proper titles and info
-const TeamChannelHeader = ({ setOpenOptions }) => {
+function TeamChannelHeader ({ setOpenOptions }) {
     var { channel, watcher_count } = useChannelStateContext();
-    var { client } = useChatContext();
   
     // Determines header of channel message feed
-    const MessagingHeader = () => {
+    function MessagingHeader() {
       // get channel members where they arent the user
-      var members = Object.values(channel.state.members).filter(({ user }) => user.id !== client.userID);
       // if were in the DMs just say DMs
       if(channel.type === 'messaging') {
         return (
@@ -95,20 +95,20 @@ const TeamChannelHeader = ({ setOpenOptions }) => {
       return (
         <div className='channel-inner-header-wrap2'>
           <p style={channel_header}>Group: {channel.data.name} </p>
-          <span style={{ display: 'flex' }} onClick={() => setOpenOptions(true)}>
+          <span style={quick_flex} onClick={() => setOpenOptions(true)}>
             <ChannelInfo />
           </span>
         </div>
       );
     };
     // function to get the users watching the chat, posts this number to header
-    const getWatcherText = (watchers) => {
+    function getWatcherText (watchers) {
       if (!watchers) return 'Nobody is online';
       else{
       return `${watchers} users online in group`;
     }
     };
-    // Return the  Header component w container
+    // Return the  Header component w container, print the watcher count from stream chat api
     return (
       <div style={header_container}>
         <MessagingHeader />

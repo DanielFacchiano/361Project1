@@ -58,14 +58,38 @@ body {
 .channel-inner-header-wrap2 svg {
   cursor: pointer;
 }
-.message_container{
+.message_container_user{
+  margin-left: 44%;
+  display: flex;
+  flex-direction: column;
   padding-top: 1px;
   width: 40%;
   background-color: lightblue;
   border-radius: 10px;
   margin-bottom: 25px;
+  padding-left: 1%;
+  padding-bottom: 1%;
+
 
 }
-.userName_message {
+
+.message_container_other{
+  display: flex;
+  padding-top: 1px;
+  width: 40%;
+  background-color: lightgreen;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-left: 1%;
+  padding-left: 1%;
+  padding-bottom: 1%;
+
+}
+.message_other{
   color: crimson;
+}
+.message_user {
+  color: green;
 }

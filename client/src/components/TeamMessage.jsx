@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageTeam, useMessageContext } from 'stream-chat-react';
+import { MessageTeam, useMessageContext, useChatContext } from 'stream-chat-react';
 // Url to teamates image scraping service
 const urlStr = 'https://scrape.quin.fish/';
 
@@ -7,6 +7,8 @@ const urlStr = 'https://scrape.quin.fish/';
 const TeamMessage = (Message, i) => {
     //retrieve the message we are building a component for
     const { handleOpenThread, message } = useMessageContext();
+    //We need that chat client, to check if the message we are examining is from our own user, if so different style
+    const {client} = useChatContext()
     const [imageUrl, setImageUrl] = useState('1111');
    //set image state to new url
     const setImg = (newUrl) => {
@@ -49,8 +51,8 @@ const TeamMessage = (Message, i) => {
     }
     //build message component, with username and message container
     return (
-        <div className="message_container">
-            <p className="userName_message">
+        <div className={`message_container_${client.userID==message.user.id ? "user" :"other"}`}>
+            <p className={`message_${client.userID==message.user.id ? "user" :"other"}`}>
             {message.user.name}:
             </p>
             {message.text} 

@@ -83,7 +83,7 @@ function ChannelOptions({setOpenOptions}){
         e.preventDefault();
         // if we changed the name, we need to detect and pass that
         var detectNewName = false
-
+        // if we have a different name...
         if (channelName != (channel.data.name || channel.data.id)){
             detectNewName=true
         }
