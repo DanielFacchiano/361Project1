@@ -53,7 +53,8 @@ function ChatPage(
             </div>
         )
     }
-    //needed for stream api channel component to function
+    //needed for stream api channel component
+    // something to display when no messsages
     const noState=() => (
         <div style={EmptyChannelStyle}>
             <p style={EmptyChannelParagraphStyle}>Chat History Start: </p>

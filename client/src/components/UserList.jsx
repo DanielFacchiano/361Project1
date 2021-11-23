@@ -16,7 +16,7 @@ var channelStyle = {
     justifyContent: "space-between"
   };
 
-//Justify space here makes sure the name shows up on the left, and the invite icon shows up on the right
+// Justify space here makes sure the name shows up on the left, and the invite icon shows up on the right
   var ListItemUserWrapper={
     display: "flex",
     alignItems: "center",
@@ -101,7 +101,7 @@ function UserList({setCheckedUsers}){
 
     // needed for async requests in this instance, render the user list once after users returned
     useEffect(()=> {
-        const getUsers = async () => {
+        async function getUsers(){
             if(loading) return //If we are already getting the list, don't keep trying to get it
             //loading set to true for the try catch block, where we query users from stream chat 
             setLoading(true) 

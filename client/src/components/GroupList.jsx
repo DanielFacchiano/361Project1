@@ -87,7 +87,10 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
 // Filter out channels that don't have the user as a member (get users channels)
     const filters = { members:{$in: [client.userID]}} //Get all channels where our current user is in it
 
-//return the components and there props to form our main grouplist sidebar component
+// return the components and there props to form our main grouplist sidebar component
+// Use stream chats channel list to render channels based upon user membership and team/DM, custom props for filters and display
+// format Use our own Groups(header) list component for buttons, use stream chats preview components (works great)
+// Pass render icon buttons, and functions required to change the chatpage state
     return (
         <>
            <IconsHolder logout={logout} opts={opts} />
@@ -106,7 +109,6 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
                             setOpenOptions={setOpenOptions}
                         />
                     )}
-
                />
                <ChannelList
                     filters={filters}
@@ -121,7 +123,6 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
                             setOpenOptions={setOpenOptions}
                         />
                     )}
-
                />
             </div>
         </>
@@ -129,7 +130,6 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
 }
 // Previously required for removed feature, essentially just rengers the grouplistContent component now
 function GroupList({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
-    const[toggleContainer, setToggleContainer] = useState(false)
     return(
         <>
             <div style={listStyle}>

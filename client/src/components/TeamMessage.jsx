@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MessageTeam, useMessageContext, useChatContext } from 'stream-chat-react';
+import { useMessageContext, useChatContext } from 'stream-chat-react';
 // Url to teamates image scraping service
 const urlStr = 'https://scrape.quin.fish/';
 
 //message component
-const TeamMessage = (Message, i) => {
+function TeamMessage(Message, i){
     //retrieve the message we are building a component for
     const { handleOpenThread, message } = useMessageContext();
     //We need that chat client, to check if the message we are examining is from our own user, if so different style

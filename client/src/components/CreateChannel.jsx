@@ -38,7 +38,7 @@ var buttonStyle={
     fontWeight: "bold",
     fontSize: "18px",
     padding: "10px 20px",
-    color: "#ffffff",
+    color: "white",
     borderRadius: "8px",
     cursor: "pointer"
 }

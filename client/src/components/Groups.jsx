@@ -8,6 +8,7 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
     if(error) {
         if (type === 'team'){
             return (
+
             <div className="team-channel-list">
                 <p>
                     Connection Error! Try again later
@@ -37,6 +38,7 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
                     {type === 'team' ? 'Channels' : 'Direct Messages'}
                 </p>
                 <AddChannel
+
                     setNewChannel={setNewChannel}
                     setCreateType={setCreateType} 
                     newChannel={newChannel}
@@ -44,6 +46,7 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
                     type ={type === 'team' ? "team" : "messaging"}
                 />
             </div>
+            
             {children}
         </div>
     )

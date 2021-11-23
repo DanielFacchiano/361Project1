@@ -9,7 +9,7 @@ var SignInInputs = {
     display: "flex",
     flexDirection: "column",
     background: "lightblue",  
-    padding: "6rem",
+    padding: "100px",
     justifyContent: "center"
   }
 
@@ -37,7 +37,7 @@ var SignInContainerStyle = {
   }
 // style for the button wrapper
   var buttonHolderStyle= {
-    marginTop: "2rem",
+    marginTop: "20px",
     display: "flex",
     justifyContent: "flex-start"
   }
@@ -45,21 +45,14 @@ var SignInContainerStyle = {
   //style for sign in/ sign up buton
   var buttonStyle={
     borderRadius: "4px",
-    background: "#000000",
+    background: "black",
     border: "1px solid #005fff",
-    color: "#fff",
-    fontWeight: "500",
-    padding:" 0.5rem 1.1rem",
+    color: "white",
+    fontWeight: "450",
+    padding:" 10px 14px",
     cursor: "pointer",
-    transition: "0.3s ease"
   }
 
-  var initialFields = {
-    fullName: '',
-    username: '',
-    password: '',
-    confirmPassword:''
-}
 //get our cookies instance
 const cookies = new Cookies();
 
@@ -71,6 +64,7 @@ function SignIn() {
     function nextMode(){
         setSignIn(!signIn)
     }
+
 // If we detect that something has changed in one of the inputs, we pass all the previous fields to fields usestate, 
 //and then we set the specifc fields of the input that was changed to the new detected value. 
     function detectChange(e){
@@ -82,7 +76,7 @@ function SignIn() {
     // we also set our cookies to the users data
     async function handleSubmit(e){
         e.preventDefault();
-
+        // de-refrence the following from 
         const {fullName, username, password} = fields
         const URL ="http://localhost:4000/form";
         const { data: {token, userId, hashedPassword} } = await axios.post(`${URL}/${signIn ? 'signin' : 'register'}`,{
@@ -107,7 +101,7 @@ function SignIn() {
                 <p style={SignUpText}> 
                     <h2>{signIn ? 'Sign In Here:' : 'Sign Up Here:'}</h2>
                     <form onSubmit={handleSubmit}>
-                        {!signIn && (
+                        {!signIn ? (
                             <div className= "input_field">
                                 <label htmlFor="fullName">Full Name </label>
                                 <input
@@ -118,8 +112,7 @@ function SignIn() {
                                     required
                                 />
                             </div>
-                        )}
-
+                        ):""}
                             <div className= "input_field">
                                 <label htmlFor="username">UserName </label>
                                 <input
@@ -140,7 +133,7 @@ function SignIn() {
                                     required
                                 />
                             </div>
-                            {!signIn && (
+                            {!signIn ? (
                             <div className= "input_field">
                                 <label htmlFor="confirmPassword">Confirm Password </label>
                                 <input
@@ -151,7 +144,7 @@ function SignIn() {
                                     required
                                 />
                             </div>
-                        )}
+                        ): ""}
                         <div style = {buttonHolderStyle}>
                             <button style = {buttonStyle}>
                                 {!signIn ? "Sign Up!" : "Sign In!"}
