@@ -37,6 +37,8 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
                 <p>
                     {type === 'team' ? 'Channels' : 'Direct Messages'}
                 </p>
+                <div  className={`addButtonHolder_${type === 'team' ? 'Channels' : 'DirectMessages'}`}> 
+                <span className={`addToolTip_${type === 'team' ? 'Channels' : 'DirectMessages'}`}>Click here to add a group and members</span>
                 <AddChannel
 
                     setNewChannel={setNewChannel}
@@ -45,6 +47,7 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
                     setOpenOptions={setOpenOptions}
                     type ={type === 'team' ? "team" : "messaging"}
                 />
+                </div>
             </div>
             
             {children}

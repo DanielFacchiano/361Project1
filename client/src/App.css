@@ -40,6 +40,18 @@ body {
   width: 60px;
   cursor: pointer;
 }
+.icon3{
+  width: 60px;
+  height: 60px;
+  margin: 14px;
+  background-color: white;
+
+}
+.icon3 img{
+  width: 60px;
+  cursor: pointer;
+}
+
 
 .group-list-wrapper{
   width: 300px;
@@ -93,3 +105,96 @@ body {
 .message_user {
   color: green;
 }
+ /***** Tooltips ******/
+
+ .icon2 span{
+  visibility: hidden;
+  width: 200;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  padding: 6px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+ }
+
+ .icon2:hover .optionsTooltip{
+     visibility: visible;
+     
+ }
+
+  .icon3 span{
+  visibility: hidden;
+  width: 200;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  padding: 6px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 135px;
+ }
+
+ .icon3:hover .optionsTooltip2{
+     visibility: visible;
+     
+ }
+
+ .addButtonHolder_Channels span{
+  visibility: hidden;
+  width: 200;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  padding: 6px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 80px;
+ }
+
+ .addButtonHolder_Channels:hover .addToolTip_Channels{
+     visibility: visible;   
+ }
+
+ .addButtonHolder_DirectMessages span{
+  visibility: hidden;
+  width: 200;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  padding: 6px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 398px;
+ }
+
+ .addButtonHolder_DirectMessages:hover .addToolTip_DirectMessages{
+     visibility: visible;   
+ }
+
+  .channelInfoHolder span{
+  visibility: hidden;
+  width: 200;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 7px;
+  padding: 6px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 40px;
+ }
+
+ .channelInfoHolder:hover .channelInfoToolTip{
+     visibility: visible;   
+ }

@@ -30,6 +30,7 @@ var titleStyle = {
     fontSize: "18px",
     lineHeight: "28px",
 }
+
 // Function returns the header 
 function ListHeader(){ 
     return (
@@ -47,9 +48,11 @@ function IconsHolder({logout, opts}) {
             <img className ='iconimg1' src={icon1} alt="appIcon" width="30"/>
         </div>
         <div className="icon2" onClick={opts}>
+            <span className="optionsTooltip"> Click here to open options for currently open channel</span>
             <img className='options' src={icon3} alt="OptionsIcon" width="30"/>
         </div>
-        <div className="icon2" onClick={logout}>
+        <div className="icon3" onClick={logout}>
+            <span className="optionsTooltip2"> Click here to logout and return to the sign in screen</span>
             <img className='iconimg2' src={icon2} alt="LogoutIcon" width="30"/>
         </div>
     </div>

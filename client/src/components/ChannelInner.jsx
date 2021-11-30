@@ -96,7 +96,10 @@ function TeamChannelHeader ({ setOpenOptions }) {
         <div className='channel-inner-header-wrap2'>
           <p style={channel_header}>Group: {channel.data.name} </p>
           <span style={quick_flex} onClick={() => setOpenOptions(true)}>
+            <div className ="channelInfoHolder">
+            <span className ="channelInfoToolTip">Click here to open the currently open channel's options</span>
             <ChannelInfo />
+            </div>
           </span>
         </div>
       );
