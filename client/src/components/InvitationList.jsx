@@ -113,7 +113,9 @@ function InvitationList({setCheckedUsers}){
     // needed for async requests in this instance, render the user list once after users returned
     useEffect(()=> {
         async function getUserList(){
-            if(loadingList) return //If we are already getting the list, don't keep trying to get it
+            if(loadingList == true) {
+                return
+            } //If we are already getting the list, don't keep trying to get it
             //loading set to true for the try catch block, where we query users from stream chat 
             setloadingList(true) 
             
@@ -126,7 +128,7 @@ function InvitationList({setCheckedUsers}){
                     {limit: 10}
                 );
                     //If response has entries, set users array to the response 
-                if(response.users.length) {
+                if(response.users.length > 0) {
                     setUsers(response.users)
                 } 
             } catch (error) {
@@ -145,9 +147,10 @@ function InvitationList({setCheckedUsers}){
     <MasterList>
         {/* We will map every user in the users state into the ListItemUser components so that we can build a list of users*/}
         {loadingList ? 
-        <p>
-            Loading Invitation Page
-        </p> : 
+        <div>
+            <p>Loading Invitation Page, please wait</p>
+            
+        </div> : 
             (users.map((user)=>(
                 <ListItemUser user={user} setCheckedUsers={setCheckedUsers}/>
             ))

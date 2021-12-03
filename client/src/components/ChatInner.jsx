@@ -53,17 +53,15 @@ function ChatInner({ setOpenOptions }){
 
   // required handler for the free stream chat messaging component, fields must match streamChat APIs stuff.
   function SubmitHandler (message)  {
-    var updatedMessage = {
-      mentioned_users: message.mentioned_users,
+    var newMessage = {
       text: message.text,
       parent: message.parent,
       parent_id: message.parent?.id,
-      attachments: message.attachments,
     };
 
     // Post message (function from channelAction context) posts the message object to the current channel if there is one to send
     if (postMessage == true) {
-      postMessage(updatedMessage);
+      postMessage(newMessage);
     }
   };
 // https://getstream.io/chat/docs/sdk/react/utility-components/window/
@@ -92,7 +90,7 @@ function TeamChannelHeader ({ setOpenOptions }) {
     function MessagingHeader() {
       // get channel members where they arent the user
       // if were in the DMs just say DMs
-      if(channel.type === 'messaging') {
+      if(channel.type == 'messaging') {
         return (
           <div style = {channel_header}>
               Direct Messaging
@@ -116,7 +114,9 @@ function TeamChannelHeader ({ setOpenOptions }) {
 
     // function to get the users watching the chat, posts this number to header
     function getWatcherText (count) {
-      if (!count) return 'Nobody is online';
+      if (!count) {
+        return 'Nobody is online';
+      }
       else{
       return `${count} users are online in this group`;
     }

@@ -9,6 +9,7 @@ import 'stream-chat-react/dist/css/index.css'
 
 //where we import our components into the program
 import ChatPage from './components/ChatPage' 
+import ChatInner from './components/ChatInner';
 import GroupList from './components/GroupList'
 import Groups from './components/Groups';
 import SignIn from './components/SignIn';
@@ -24,16 +25,30 @@ var userSignedIn = cookies.get("token");
 //get our stream chat instance by passing stream chat our api key
 var instance = StreamChat.getInstance(streamKey)
 //if we have an auth token, we can our cookie info info to the stream instance to get our users pertinent stuff
+
+
 if(userSignedIn) {
+  var curToken = cookies.get('token')
+  var curUsername = cookies.get('username')
+  var currFullName = cookies.get('fullname')
+  var curId = cookies.get('userId')
+  var currHashPw = cookies.get('hashedPassword')
   instance.connectUser({
-      token : cookies.get('token'),
-      name: cookies.get('username'),
-      fullName: cookies.get('fullname'),
-      id: cookies.get('userId'),
-      hashedPassword: cookies.get('hashedPassword')
+      token : curToken,
+      name: curUsername,
+      fullName: currFullName,
+      id: curId,
+      hashedPassword: currHashPw
   }, userSignedIn)
 }
 console.log(userSignedIn)
+
+var mainWrapper = {
+  display: "flex",
+  height: "100%",
+
+};
+
 
 // The main componenet we put into the html document
 function App() {
@@ -56,25 +71,27 @@ function App() {
     // our main app page consists of two components. The sidebar on the left, and the chat page on the right. These different
     // components need different usestate props to open and close different menus pertinenet to them. We render them bellow
     // wrapped in the chat client instance so that we can grab contexts in the future.
-    //The most powerful wrapper 
-    <div className="eminmen"> 
+    <div style={mainWrapper}> 
 {/* chat is a component from stream api that wraps the application. Provides "chat context to childrem including StreamChat client isntance" 
     https://getstream.io/chat/docs/sdk/react/core-components/chat/ */}
       <Chat 
+      theme 
       client = {instance} 
-      theme='team light'>
+      >
             {/* Render the sidebar, pass it the icons required to change states via side buttons */}
             <GroupList
               newChannel={newChannel}
+              openOptions={openOptions}
               setCreateType={setCreateType}
               setNewChannel={setNewChannel}
               setOpenOptions={setOpenOptions}
-              openOptions={openOptions}
+              createType={createType}
             />
-            {/* Render the main chat container, also has options to state changing options pertinent to it */}
+            {/* Render the main chat container, also has options to state changing options  */}
             <ChatPage
               newChannel={newChannel}
               openOptions={openOptions}
+              setCreateType={setCreateType}
               setNewChannel={setNewChannel}
               setOpenOptions={setOpenOptions}
               createType={createType}

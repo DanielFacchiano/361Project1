@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import {useChatContext} from 'stream-chat-react'
 import InvitationList from './InvitationList';
+import { ChannelList } from 'stream-chat-react'
+
+
 //opensource svg, pass it a function to change edit state to false
 import {CloseCreate} from '../Stuff/CloseCreate'
 
@@ -51,18 +54,20 @@ var optionsSubmit={
     borderRadius: "8px",
     cursor: "pointer"
     }
+
 //function for the name input field
-function ChannelNameInput({channelName = '', setChannelName}){
+function ChannelNameInput({channelName = null, setChannelName}){
 // If we detect title input field changes, we change our target title state for submitting eventually
     function detectChange(e){
         e.preventDefault()
-        setChannelName(e.target.value)
+        var newName = e.target.value
+        setChannelName(newName)
     }
 // If we detect change in the channel name input, we set the channel name state to the detected input
     return(
         <div style={titleWrapperContainer}>
             <p>Channel Name</p>
-            <input value={channelName} onChange={detectChange} placeholder="Channel-Name (No blanks allowed)" />
+            <input value={channelName} placeholder="Channel-Name (No blanks allowed)" onChange={detectChange}  />
             <p></p>
             <span>Add New Members</span>
         </div>
@@ -85,7 +90,10 @@ function ChannelOptions({setOpenOptions}){
         // if we changed the name, we need to detect and pass that
         var detectNewName = false
         // if we have a different name...
-        if (channelName != (channel.data.name || channel.data.id)){
+        var cName =channel.data.name
+        var cId =channel.data.id
+
+        if (channelName != (cName || cId)){
             detectNewName=true
         }
         //set new name by sending to stream chat component with correct context
@@ -93,7 +101,7 @@ function ChannelOptions({setOpenOptions}){
             await channel.update({name: channelName}, {text: 'name changed'})
         }
         //if new users, set new users from checked users array
-        if(checkedUsers.length){
+        if(checkedUsers.length > 0){
             await channel.addMembers(checkedUsers)
         }
         //clean up options fields
@@ -125,7 +133,7 @@ function ChannelOptions({setOpenOptions}){
                 <CloseCreate setOpenOptions={setOpenOptions}/>
             </div>
             <ChannelNameInput channelName={channelName} setChannelName={setChannelName} />
-            <InvitationList setCheckedUsers={setCheckedUsers} />
+            <InvitationList channelName={channelName} setCheckedUsers={setCheckedUsers} />
             <div style={optionsSubmitWrap} onClick={updateGroup}>
                 <p style={optionsSubmit}>
                     Update

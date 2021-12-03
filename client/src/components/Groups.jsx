@@ -6,7 +6,7 @@ import {AddChannel} from '../Stuff/AddChannel'
 function Groups ({children, error = false, loading, type, setNewChannel, setCreateType, newChannel, openOptions, setOpenOptions}) {
     // If we get an error from the API channelList, we display the following
     if(error == true) {
-        if (type === 'team'){
+        if (type == 'team'){
             return (
             <div>
                     Connection Error! Try again later
@@ -29,13 +29,12 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
     // finally, we render the preview components that go with this list.
     return (
         <div>
-            <div>
                 <p>
                     {type == 'team' ? 'Channels' : 'Direct Messages'}
                 </p>
                 Add New:
-                <div  className={`addButtonHolder_${type === 'team' ? 'Channels' : 'DirectMessages'}`}> 
-                <span className={`addToolTip_${type === 'team' ? 'Channels' : 'DirectMessages'}`}> Click here to create a group with members </span>
+                <div  className={`addButtonHolder_${type == 'team' ? 'Channels' : 'DirectMessages'}`}> 
+                <span className={`addToolTip_${type == 'team' ? 'Channels' : 'DirectMessages'}`}> Click here to create a group with members </span>
                
                 {/* Svg to add channel, takes options functions and manipulates them based on attributes (onlclick) works for both
                 dms and channels. This is accomplished by setting type based upon type passed to groups component */}
@@ -50,7 +49,6 @@ function Groups ({children, error = false, loading, type, setNewChannel, setCrea
                     setCreateType={setCreateType} 
                 />
                 </div>
-            </div>
             {/* Renders the actual channels in our groups component, the components are passed for us by stream-chat in GroupList*/}
             {children}
             </div>

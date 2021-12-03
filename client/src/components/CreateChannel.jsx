@@ -19,7 +19,6 @@ var titleWrapperContainer= {
 }
 // style for page title text
 var createHeader= {
-    fontFamily: "sans-serif",
     fontWeight: "bold",
     fontSize: "18px",
     marginLeft: "20px"
@@ -70,7 +69,7 @@ function NameField({groupName = '', setGroupName}){
 // Component to facilitate channel creation
 function CreateChannel({createType, setNewChannel}){
     // State for name of the selected channel default is left blank by default
-    const [groupName, setGroupName] = useState('')
+    const [groupName, setGroupName] = useState(null)
     // Retrieve client and set Active channel from chat context via derefrencing
     const {client, setActiveChannel} = useChatContext();
     // State for users to add to group. Includes current user by default
@@ -109,11 +108,14 @@ function CreateChannel({createType, setNewChannel}){
     return (
         <div style={createContainer}>
             <div style={createHeader}>
-                <span>
-                    {createType === 'team' ? 'Create a new Group' : 'Send a user messages'}
-                </span>
+                <div>
+                <h3>
+                    {createType == 'team' ? 'Create a new Group' : 'Send a user a messages'}
+                </h3>
+                </div>
                 {/* We want to pass the close creation button to the function to change create states */}
                 <CloseCreate 
+                createType={createType}
                 setNewChannel={setNewChannel}
                 />
             </div>

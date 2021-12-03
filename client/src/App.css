@@ -9,10 +9,6 @@ body {
   height: 100%;
 }
 
-.eminmen{
-  display: flex;
-  height: 100%;
-}
 .icon_side_container{
   width: 100px;
   background-color: salmon;
@@ -51,14 +47,6 @@ body {
   width: 60px;
   cursor: pointer;
 }
-
-.group-list-wrapper{
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  background: lightsalmon
-}
-
 
 .message_container_user{
   margin-left: 44%;

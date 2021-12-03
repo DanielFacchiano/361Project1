@@ -69,8 +69,9 @@ function SignIn() {
 // If we detect that something has changed in one of the inputs, we pass all the previous fields to fields usestate, 
 // and then we set the specifc fields of the input that was changed to the new detected value. 
     function detectChange(event){
-        setFields({...fields, [event.target.name]: event.target.value })
-
+        var target=event.target.name
+        var newField=event.target.value
+        setFields({...fields, [target]: newField })
     }
     // function to submit new users/ sign in info
     // we send front end info into our server which sends it to the stream chat api server
@@ -85,10 +86,10 @@ function SignIn() {
             username, password, fullName
         })
         // We need to set our cookies with all of the information returned to us from our axios request to our express server
-        cookies.set('token', token)
-        cookies.set('username', username)
-        cookies.set('fullName', fullName)
         cookies.set('userId', userId)
+        cookies.set('token', token)
+        cookies.set('fullName', fullName)
+        cookies.set('username', username)
         // sign up needs the hashed pw we created for our user
         if(!signIn){
             cookies.set('hashedPassword', hashedPassword)   

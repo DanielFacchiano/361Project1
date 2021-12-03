@@ -21,6 +21,13 @@ var ListHeaderStyle = {
 
   };
 
+var groupsListWrapper={
+    width: "300px",
+    display: "flex",
+    flexDirection: "column",
+    background: "lightsalmon"
+}
+
 // Function returns the header of the groups side bar 
 function ListHeader(){ 
     return (
@@ -98,7 +105,7 @@ function GroupList({setNewChannel, setCreateType, newChannel, setOpenOptions, op
         <>
         {/* Render iconholder with the pertinenet state functions */}
            <IconsHolder logout={logout} opts={opts} />
-            <div className ="group-list-wrapper"> 
+            <div style ={groupsListWrapper}> 
                <ListHeader />
                 {/* API info at https://getstream.io/chat/docs/sdk/reactnative/core-components/channel-list/
                 Channel list Component from streamchat, we tell it what channels we want, 

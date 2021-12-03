@@ -18,21 +18,25 @@ function ChatPage(
     ) {
         //get channel from context
     const { channel } = useChatContext();
-//if new channel, return the createChannel component
-    if(newChannel){
-        return(
-            <div style={channelStyle}>
-                <CreateChannel createType={createType} 
-                setNewChannel={setNewChannel} />
-            </div>
-        )
-    }
+
 //if the option state is true, open the options component, pass it the function so we can close menu later
     if(openOptions){
         return(
             <div style={channelStyle}>
                 <ChannelOptions 
-                setOpenOptions={setOpenOptions}/>
+                setOpenOptions={setOpenOptions}
+                setNewChannel={setNewChannel}/>
+            </div>
+        )
+    }
+
+//if new channel, return the createChannel component
+    if(newChannel){
+        return(
+            <div style={channelStyle}>
+                <CreateChannel createType={createType} 
+                setOpenOptions={setOpenOptions}
+                setNewChannel={setNewChannel} />
             </div>
         )
     }
