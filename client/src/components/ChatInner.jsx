@@ -45,7 +45,7 @@ var head_wraps={
 }
 
 // Need open options prop for options button at top of page
-function ChannelInner({ setOpenOptions }){
+function ChatInner({ setOpenOptions }){
 
   // Function defrencrenced from the useChannelActionContext, which is context provider for the selected channel
   // this function lets us post messages to this active channel.
@@ -132,4 +132,4 @@ function TeamChannelHeader ({ setOpenOptions }) {
     );
   };
 
-  export default ChannelInner;
+  export default ChatInner;

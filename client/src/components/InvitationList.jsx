@@ -102,7 +102,7 @@ function ListItemUser({ user, setCheckedUsers}){
 }
 
 // userlist component, 
-function UserList({setCheckedUsers}){ 
+function InvitationList({setCheckedUsers}){ 
     // get client instance
     const {client} = useChatContext()
     // state for user list held by the client for the list we are generating
@@ -157,4 +157,4 @@ function UserList({setCheckedUsers}){
     )
 }
 
-export default UserList
+export default InvitationList

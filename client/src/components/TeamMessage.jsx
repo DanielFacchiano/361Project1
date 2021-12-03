@@ -6,7 +6,7 @@ const urlStr = 'https://scrape.quin.fish/';
 //message component
 function TeamMessage(){
     //retrieve the message we are building a component for
-    const { handleOpenThread, message } = useMessageContext();
+    const { message } = useMessageContext();
     //We need that chat client, to check if the message we are examining is from our own user, if so different style
     const {client} = useChatContext()
     const [imageUrl, setImageUrl] = useState('1111');

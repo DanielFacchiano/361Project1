@@ -4,7 +4,7 @@ import {Channel} from "stream-chat-react"
 import CreateChannel from './CreateChannel';
 import ChannelOptions from './ChannelOptions';
 import TeamMessage from './TeamMessage';
-import ChannelInner from './ChannelInner';
+import ChatInner from './ChatInner';
 
 // style for main chat page container for all states
 var channelStyle = {
@@ -43,7 +43,7 @@ function ChatPage(
         <div style={channelStyle}>
             <Channel Message={(messageProps) => 
                 <TeamMessage  {...messageProps} />} >
-            <ChannelInner setOpenOptions={setOpenOptions} />
+            <ChatInner setOpenOptions={setOpenOptions} />
             </Channel >
         </div>
     )

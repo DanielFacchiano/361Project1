@@ -2,7 +2,7 @@ import React from 'react';
 import{useState} from 'react';
 import {useChatContext} from 'stream-chat-react'
 import {CloseCreate} from '../Stuff/CloseCreate'
-import UserList from './UserList';
+import InvitationList from './InvitationList';
 
 // Style for main wrapper
 var createContainer = {
@@ -103,8 +103,8 @@ function CreateChannel({createType, setNewChannel}){
         }
     }
     // Layout of components for create channel page. We render the correct title, the correct buttons
-    // We render the input if not DM, we render our userlist component with the function to set
-    // an array of users corresponding to checks(inside UserList) FInally we have a submit button
+    // We render the input if not DM, we render our InvitationList component with the function to set
+    // an array of users corresponding to checks(inside InvitationList) FInally we have a submit button
     // to create the new channel
     return (
         <div style={createContainer}>
@@ -121,7 +121,7 @@ function CreateChannel({createType, setNewChannel}){
             {createType === 'team' && 
             <NameField groupName={groupName} 
             setGroupName={setGroupName}/>}
-            <UserList setCheckedUsers={setCheckedUsers}  />
+            <InvitationList setCheckedUsers={setCheckedUsers}  />
                 {/* Submit button wrapper, onclick is submission of a new channel (create and render group w fields) */}
             <div style={buttonWrapper} onClick={SubmitChannel}>
                 <p style={buttonStyle}>

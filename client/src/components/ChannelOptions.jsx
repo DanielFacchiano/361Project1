@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {useChatContext} from 'stream-chat-react'
-import UserList from './UserList';
+import InvitationList from './InvitationList';
 //opensource svg, pass it a function to change edit state to false
 import {CloseCreate} from '../Stuff/CloseCreate'
 
@@ -77,7 +77,7 @@ function ChannelOptions({setOpenOptions}){
     const {channel} = useChatContext();
     // Detect changing channel name to pass around
     const [channelName, setChannelName] = useState(channel.data.name)
-    // array of the users that were checked in the userlist options list
+    // array of the users that were checked in the InvitationList options list
     const [checkedUsers, setCheckedUsers] = useState([])
     // Function to handle submission
     async function updateGroup(e){
@@ -125,7 +125,7 @@ function ChannelOptions({setOpenOptions}){
                 <CloseCreate setOpenOptions={setOpenOptions}/>
             </div>
             <ChannelNameInput channelName={channelName} setChannelName={setChannelName} />
-            <UserList setCheckedUsers={setCheckedUsers} />
+            <InvitationList setCheckedUsers={setCheckedUsers} />
             <div style={optionsSubmitWrap} onClick={updateGroup}>
                 <p style={optionsSubmit}>
                     Update
