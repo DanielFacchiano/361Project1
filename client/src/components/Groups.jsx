@@ -2,56 +2,58 @@ import React from 'react'
 import {AddChannel} from '../Stuff/AddChannel'
 
 
-//We pass the props from the api here, as well as type
-function Groups ({children, error = false, loading, type, setNewChannel, setCreateType, newChannel, setOpenOptions}) {
-    //If we get an error from the API channelList, we display the following
-    if(error) {
+// We get the props from the api here, as well as type and state functions
+function Groups ({children, error = false, loading, type, setNewChannel, setCreateType, newChannel, openOptions, setOpenOptions}) {
+    // If we get an error from the API channelList, we display the following
+    if(error == true) {
         if (type === 'team'){
             return (
-
-            <div className="team-channel-list">
-                <p>
+            <div>
                     Connection Error! Try again later
-                </p>
-
             </div>)
         }
         else{
-            return null
+            return 
         }
     }
-    //If we our currently loading from the Api, we display loading. We display correct channel type
-    if(loading){
+    // If we our currently loading our group list, we tell the user
+    if(loading == true){
         return (
-            <div className="team-channel-list">
-                <p>
-                    {type === 'team' ? 'Channels' : 'Messages'} loading ...
-                </p>
+            <div>
+                    loading, please wait...
             </div>
         )
     }
-    //We return the correct titlte and button for the channels list
+    // We return the correct title and add button for the channel list we are generating with this component
+    // We add the tooltip code as well. We pass the correct props to the new channel button we embed into the header
+    // finally, we render the preview components that go with this list.
     return (
         <div>
             <div>
                 <p>
-                    {type === 'team' ? 'Channels' : 'Direct Messages'}
+                    {type == 'team' ? 'Channels' : 'Direct Messages'}
                 </p>
+                Add New:
                 <div  className={`addButtonHolder_${type === 'team' ? 'Channels' : 'DirectMessages'}`}> 
-                <span className={`addToolTip_${type === 'team' ? 'Channels' : 'DirectMessages'}`}>Click here to add a group and members</span>
+                <span className={`addToolTip_${type === 'team' ? 'Channels' : 'DirectMessages'}`}> Click here to create a group with members </span>
+               
+                {/* Svg to add channel, takes options functions and manipulates them based on attributes (onlclick) works for both
+                dms and channels. This is accomplished by setting type based upon type passed to groups component */}
                 <AddChannel
-
+                    type ={
+                            type == "team" ? "team" : "messaging"
+                        }
                     setNewChannel={setNewChannel}
-                    setCreateType={setCreateType} 
                     newChannel={newChannel}
                     setOpenOptions={setOpenOptions}
-                    type ={type === 'team' ? "team" : "messaging"}
+                    openOptions={openOptions}
+                    setCreateType={setCreateType} 
                 />
                 </div>
             </div>
-            
+            {/* Renders the actual channels in our groups component, the components are passed for us by stream-chat in GroupList*/}
             {children}
-        </div>
+            </div>
     )
 }
 

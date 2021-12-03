@@ -1,6 +1,8 @@
 import React from 'react'
 import {useState} from 'react'
+// Axios lets us make https requests simpler and easier
 import axios from 'axios'
+// cookies for user data
 import Cookies from 'universal-cookie'
 
 // secondary container, contains background
@@ -26,9 +28,7 @@ var SignInContainerStyle = {
     borderRadius: "10px",
     background: "white",
     flexDirection: "column"
-
   }
-
 
 // style for the text of the switch button
   var buttonColor = {
@@ -38,21 +38,22 @@ var SignInContainerStyle = {
 // style for the button wrapper
   var buttonHolderStyle= {
     marginTop: "20px",
-    display: "flex",
-    justifyContent: "flex-start"
+    display: "flex"
   }
   
   //style for sign in/ sign up buton
   var buttonStyle={
     borderRadius: "4px",
     background: "black",
-    border: "1px solid #005fff",
     color: "white",
-    fontWeight: "450",
+    fontWeight: "650",
     padding:" 10px 14px",
     cursor: "pointer",
   }
+  var inputStyle={
+    paddingBottom: "18px"
 
+  }
 //get our cookies instance
 const cookies = new Cookies();
 
@@ -66,32 +67,34 @@ function SignIn() {
     }
 
 // If we detect that something has changed in one of the inputs, we pass all the previous fields to fields usestate, 
-//and then we set the specifc fields of the input that was changed to the new detected value. 
-    function detectChange(e){
-        setFields({...fields, [e.target.name]: e.target.value })
+// and then we set the specifc fields of the input that was changed to the new detected value. 
+    function detectChange(event){
+        setFields({...fields, [event.target.name]: event.target.value })
 
     }
     // function to submit new users/ sign in info
     // we send front end info into our server which sends it to the stream chat api server
     // we also set our cookies to the users data
-    async function handleSubmit(e){
-        e.preventDefault();
+    async function submitUser(event){
+        event.preventDefault();
         // de-refrence the following from 
         const {fullName, username, password} = fields
-        const URL ="http://localhost:4000/form";
-        const { data: {token, userId, hashedPassword} } = await axios.post(`${URL}/${signIn ? 'signin' : 'register'}`,{
+        var URL ="http://localhost:4000/form";
+        const { 
+            data: {token, userId, hashedPassword} } = await axios.post(`${URL}/${signIn ? 'signin':'register'}`,{
             username, password, fullName
         })
+        // We need to set our cookies with all of the information returned to us from our axios request to our express server
         cookies.set('token', token)
         cookies.set('username', username)
         cookies.set('fullName', fullName)
         cookies.set('userId', userId)
-        //sign up needs the hashed pw
+        // sign up needs the hashed pw we created for our user
         if(!signIn){
             cookies.set('hashedPassword', hashedPassword)   
         }
-        //after cookies have been set, we reload the window
-        window.location.reload();
+        //after cookies have been set, we reload the window of our react application, to see the results of the reload
+        window.location.reload(this);
 
     }
     // The various html to lay out the sign in/ sign up page
@@ -99,62 +102,72 @@ function SignIn() {
         <div style={SignInContainerStyle}>
             <div style={SignInInputs}>
                 <p style={SignUpText}> 
+                {/* If we are in the signIn page display it, if not tells us that too */}
                     <h2>{signIn ? 'Sign In Here:' : 'Sign Up Here:'}</h2>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={submitUser}>
+                    {/* We only show this div if we are not in the signIn page else show nothing*/}           
                         {!signIn ? (
-                            <div className= "input_field">
+                            <div style= {inputStyle}>
                                 <label htmlFor="fullName">Full Name </label>
                                 <input
+
                                     name="fullName"
                                     onChange={detectChange}
                                     type="text"
-                                    placeholder="Insert Full Name"
                                     required
+                                    placeholder="Insert Full Name here"
                                 />
                             </div>
                         ):""}
-                            <div className= "input_field">
+                            <div style= {inputStyle}>
                                 <label htmlFor="username">UserName </label>
                                 <input
+
                                     name="username"
                                     onChange={detectChange}
                                     type="text"
-                                    placeholder="Insert username"
                                     required
+                                    placeholder="Insert username here"
                                 />
                             </div>
-                            <div className= "input_field">
+                            <div style= {inputStyle}>
                                 <label htmlFor="password">Password </label>
                                 <input
+
                                     name="password"
                                     onChange={detectChange}
                                     type="password"
-                                    placeholder="Insert password here"
                                     required
+                                    placeholder="Insert password here"
                                 />
                             </div>
+                            {/* We only show this div if we are not in the signIn page else show nothing*/}
                             {!signIn ? (
-                            <div className= "input_field">
+                            <div style= {inputStyle}>
                                 <label htmlFor="confirmPassword">Confirm Password </label>
                                 <input
+
                                     name="confirmPassword"
                                     onChange={detectChange}
                                     type="password"
-                                    placeholder="confirm_password"
                                     required
+                                    placeholder="confirm password here"
+                                    
                                 />
                             </div>
                         ): ""}
+                        {/* We create a button for the form to submit our filled fields */}
                         <div style = {buttonHolderStyle}>
                             <button style = {buttonStyle}>
-                                {!signIn ? "Sign Up!" : "Sign In!"}
+                                Submit
                             </button>
                             
                         </div>
                     </form>
                     <div >
                         <p>
-                            {signIn ? "Go to Sign Up Page:" : "Go to Sign In Page:"}
+                      {/* We create a toggle button for the form to swap between the sign in and sign up fields */}
+                            Toggle Sign In / Sign Up
                             <div style ={buttonColor}onClick={nextMode}>
                                 {signIn ? 'Sign Up' : 'Sign In'}
                             </div>
@@ -165,5 +178,4 @@ function SignIn() {
         </div>
     )
 }
-
 export default SignIn

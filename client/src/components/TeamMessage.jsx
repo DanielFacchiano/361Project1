@@ -4,7 +4,7 @@ import { useMessageContext, useChatContext } from 'stream-chat-react';
 const urlStr = 'https://scrape.quin.fish/';
 
 //message component
-function TeamMessage(Message, i){
+function TeamMessage(){
     //retrieve the message we are building a component for
     const { handleOpenThread, message } = useMessageContext();
     //We need that chat client, to check if the message we are examining is from our own user, if so different style
@@ -15,14 +15,14 @@ function TeamMessage(Message, i){
         setImageUrl(newUrl);
       } 
 
-    //rudimentary url detection
+    //rudimentary url detection because im lazy and getting pretty tired of this nonsense
     var lastFive = message.text.substr(message.text.length - 4);
     var firstFive = message.text.substr(0, 4);
     var isUrl = false
     if((lastFive==".com" ||lastFive=="com/" || lastFive=="edu/") && firstFive == "http"){
         isUrl = true
     }
-
+    // holds the url we are going to detect and feed to Hao's microservice
     var imgUrl = ""
     console.log(message.user.name)
 
@@ -51,8 +51,8 @@ function TeamMessage(Message, i){
     }
     //build message component, with username and message container
     return (
-        <div className={`message_container_${client.userID==message.user.id ? "user" :"other"}`}>
-            <p className={`message_${client.userID==message.user.id ? "user" :"other"}`}>
+        <div className={`message_container_${client.userID==message.user.id ? "user" : "other"}`}>
+            <p className={`message_${client.userID==message.user.id ? "user" : "other"}`}>
             {message.user.name}:
             </p>
             {message.text} 

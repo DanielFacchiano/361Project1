@@ -1,18 +1,16 @@
-import React, { useState, useEffect} from 'react'
+import React from 'react'
 import Cookies from 'universal-cookie';
-import { useChatContext, ChannelList } from 'stream-chat-react'
+import { useChatContext } from 'stream-chat-react'
+import { ChannelList } from 'stream-chat-react'
+
 import icon1 from '../Stuff/icon1.png'
 import icon2 from '../Stuff/icon2.png'
 import icon3 from '../Stuff/icon3.png'
-
 import Groups from './Groups';
 const cookies = new Cookies();
 
 // component container style
-var listStyle = {
-    display: "flex",
-    height: "100%"
-}
+
 //Style for the header at the top of groupList
 var ListHeaderStyle = {
     color: 'red',
@@ -22,21 +20,12 @@ var ListHeaderStyle = {
     alignItems: "center"
 
   };
-//We can use inline styles by creating a json of styles and setting style attribute to them inline
-var titleStyle = {
-    fontFamily: "sans-serif",
-    fontStyle: "normal",
-    fontWeight: "bold",
-    fontSize: "18px",
-    lineHeight: "28px",
-}
 
-// Function returns the header 
+// Function returns the header of the groups side bar 
 function ListHeader(){ 
     return (
     <div style={ListHeaderStyle}>
-        <p style={titleStyle} >Groups:</p>
-
+        <h2>Groups:</h2>
     </div>
     )
 }
@@ -45,15 +34,21 @@ function IconsHolder({logout, opts}) {
     return (
     <div className="icon_side_container">
         <div className="icon1">
-            <img className ='iconimg1' src={icon1} alt="appIcon" width="30"/>
+            <img className ='iconimg1' 
+            src={icon1} 
+            width="32"/>
         </div>
         <div className="icon2" onClick={opts}>
             <span className="optionsTooltip"> Click here to open options for currently open channel</span>
-            <img className='options' src={icon3} alt="OptionsIcon" width="30"/>
+            <img className='options' 
+            src={icon3}  
+            width="32"/>
         </div>
         <div className="icon3" onClick={logout}>
             <span className="optionsTooltip2"> Click here to logout and return to the sign in screen</span>
-            <img className='iconimg2' src={icon2} alt="LogoutIcon" width="30"/>
+            <img className='iconimg2' 
+            src={icon2} 
+            width="32"/>
         </div>
     </div>
     )
@@ -67,12 +62,13 @@ function messageFilter(channels){
     return channels.filter((channel) => channel.type === 'messaging' ) // Return channels where the type is team
 }
 
-//We have our icon bar that we render, we then place the group container header and holder. We use the stream API
+// We have our icon bar that we render, we then place the group container header and holder. We use the stream API
 // ChannelList component to display channels, but we create our own group list component of which we pass to the 
 // api's channel component as a function of the listProp prop
-// Preview and Group list are optional, if not provided, stream chat provides its own channel list
+// Preview and Group list are optional, if not provided, stream chat provides its own channel list (we use a custom group list(groups))
+// because the built in stream chat component looks very bad and doesnt have add buttons in it.
 // First preview shows groups, the second shows direct messaging
-function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
+function GroupList({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
     const { client} = useChatContext();
 // toggle options state on off with the cog symbol
     function opts() {
@@ -80,15 +76,19 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
     }
 //to logout, we simply clear the cookies. The login page in app.jsx will now trigger, reinitiating sign in
     function logout(){
-        cookies.remove('token');
         cookies.remove('username');
         cookies.remove('fullname');
+        cookies.remove('token');
         cookies.remove('userId');
         cookies.remove('hashedPassword');
+
+        //reload Dr.Freeman
         window.location.reload();
     }
 // Filter out channels that don't have the user as a member (get users channels)
-    const filters = { members:{$in: [client.userID]}} //Get all channels where our current user is in it
+    const filters = { 
+        members:{$in: [client.userID]} //Get all channels where our current user is in it
+    } 
 
 // return the components and there props to form our main grouplist sidebar component
 // Use stream chats channel list to render channels based upon user membership and team/DM, custom props for filters and display
@@ -96,12 +96,22 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
 // Pass render icon buttons, and functions required to change the chatpage state
     return (
         <>
+        {/* Render iconholder with the pertinenet state functions */}
            <IconsHolder logout={logout} opts={opts} />
             <div className ="group-list-wrapper"> 
                <ListHeader />
+                {/* API info at https://getstream.io/chat/docs/sdk/reactnative/core-components/channel-list/
+                Channel list Component from streamchat, we tell it what channels we want, 
+                first filter gets us channels with the user in it, render filter gets us the team/message channels
+                of such channels. Setting the list prop to something overides default stream-Chat list from appearing 
+                List prop takes a function that takes the default list props from stream chat component and passes it to our custom
+                groups component. The children are the list items generated for us by stream chat, we also pass other state functions
+                so we can manipulate various option states.
+                */}
                <ChannelList
                     filters={filters}
                     GroupList   channelRenderFilterFn={channelFilter}
+                    
                     List={(listProps) => (
                         <Groups 
                             {...listProps}
@@ -110,9 +120,11 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
                             setCreateType={setCreateType} 
                             newChannel={newChannel}
                             setOpenOptions={setOpenOptions}
+                            openOptions={openOptions}
                         />
                     )}
                />
+                {/* Same as above, but the filter is for DMS instead of groups */}
                <ChannelList
                     filters={filters}
                     channelRenderFilterFn={messageFilter}
@@ -124,6 +136,7 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
                             setCreateType={setCreateType} 
                             newChannel={newChannel}
                             setOpenOptions={setOpenOptions}
+                            openOptions={openOptions}
                         />
                     )}
                />
@@ -131,22 +144,4 @@ function GroupListContent({setNewChannel, setCreateType, newChannel, setOpenOpti
         </>
     )
 }
-// Previously required for removed feature, essentially just rengers the grouplistContent component now
-function GroupList({setNewChannel, setCreateType, newChannel, setOpenOptions, openOptions }){
-    return(
-        <>
-            <div style={listStyle}>
-                <GroupListContent
-                    setNewChannel={setNewChannel} 
-                    setCreateType={setCreateType} 
-                    newChannel={newChannel} 
-                    setOpenOptions={setOpenOptions}
-                    openOptions={openOptions}
-                />
-            </div>
-        </>
-    )
-
-}
-
 export default GroupList

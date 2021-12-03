@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {useChatContext} from 'stream-chat-react'
 import UserList from './UserList';
+//opensource svg, pass it a function to change edit state to false
 import {CloseCreate} from '../Stuff/CloseCreate'
 
-//styling for input with channel name
+//styling for input with our channel name
 var titleWrapperContainer= {
     display: "flex",
     flexDirection: "column",
@@ -39,21 +40,20 @@ var optionsSubmitWrap2={
     alignItems: "center",
     borderBottomRightRadius: "16px"
     }
-// options for both of the buttons inside text
+// options for both of the buttons inside text for our icons sidebar
 var optionsSubmit={
     background: "salmon",
-    fontFamily: "sans-serif",
     fontWeight: "bold",
-    fontSize: "18px",
-    padding: "10px 20px",
-    color: "#ffffff",
+    fontSize: "20px",
+    padding: "12px 22px",
+    color: "white",
     marginRight: "30px",
     borderRadius: "8px",
     cursor: "pointer"
     }
 //function for the name input field
 function ChannelNameInput({channelName = '', setChannelName}){
-// If we detect title input field, we change target title state
+// If we detect title input field changes, we change our target title state for submitting eventually
     function detectChange(e){
         e.preventDefault()
         setChannelName(e.target.value)
@@ -63,19 +63,20 @@ function ChannelNameInput({channelName = '', setChannelName}){
         <div style={titleWrapperContainer}>
             <p>Channel Name</p>
             <input value={channelName} onChange={detectChange} placeholder="Channel-Name (No blanks allowed)" />
-            <p>Add Members</p>
+            <p></p>
+            <span>Add New Members</span>
         </div>
     )
 }
 
-// Main channel OPtions component
+// Main channel OPtions component  states to record selected users, and current names. contexts for operations gathered
 function ChannelOptions({setOpenOptions}){
     // Need client for current users userID to leave groups
     const {client} = useChatContext()
     // Need to know what channel we are editing
     const {channel} = useChatContext();
     // Detect changing channel name to pass around
-    const [channelName, setChannelName] = useState(channel?.data?.name)
+    const [channelName, setChannelName] = useState(channel.data.name)
     // array of the users that were checked in the userlist options list
     const [checkedUsers, setCheckedUsers] = useState([])
     // Function to handle submission
@@ -101,7 +102,7 @@ function ChannelOptions({setOpenOptions}){
         setCheckedUsers([])
     }
     // function to leave the group
-    // Take client user id, and remove from option selected channel
+    // Take client user id, and remove from the currently selected channel, open in the options
     async function leaveGroup(e){
         e.preventDefault();
         await channel.removeMembers([client.userID]);
@@ -111,7 +112,10 @@ function ChannelOptions({setOpenOptions}){
         setCheckedUsers([])
 
     }
-    // Return the full options component
+    // Return the full options component, we have a header, an exit button which changes state onclick
+    // We have an input component so users can change channel name
+    // We have the list of registered users rendered on the screen
+    // and we have the buttons to leave and update the group
     return (
         <div style={optionsContainer}>
             <div style={optionsHeader}>
@@ -132,7 +136,7 @@ function ChannelOptions({setOpenOptions}){
                 <p>Warning: Re-invitation required to Rejoin!</p>
                 <div style={optionsSubmitWrap2} onClick={leaveGroup}>
                 <p style={optionsSubmit}>
-                    Leave
+                    Leave Group
                 </p>
             </div>
             </div>

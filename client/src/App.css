@@ -52,24 +52,14 @@ body {
   cursor: pointer;
 }
 
-
 .group-list-wrapper{
   width: 300px;
   display: flex;
   flex-direction: column;
   background: lightsalmon
 }
-.input_field{
-  padding-bottom: 18px;
-}
 
-.channel-inner-header-wrap2 {
-  display: flex;
-  align-items: center;
-}
-.channel-inner-header-wrap2 svg {
-  cursor: pointer;
-}
+
 .message_container_user{
   margin-left: 44%;
   display: flex;
@@ -81,7 +71,6 @@ body {
   margin-bottom: 25px;
   padding-left: 1%;
   padding-bottom: 1%;
-
 
 }
 

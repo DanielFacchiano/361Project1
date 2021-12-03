@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import{useState} from 'react';
 import {useChatContext} from 'stream-chat-react'
 import {CloseCreate} from '../Stuff/CloseCreate'
 import UserList from './UserList';
@@ -43,68 +44,88 @@ var buttonStyle={
     cursor: "pointer"
 }
 // function to set channel name inpput field
-function ChannelNameInput({channelName = '', setChannelName}){
+function NameField({groupName = '', setGroupName}){
 // function using event to detect changes in input, updates inpute state
-    function detectChange(e){
-        e.preventDefault()
-        setChannelName(e.target.value)
+    function detectChange(event){
+        console.log(event)
+        //Prevent page reset
+        event.preventDefault()
+        // set the groups name state to the target value of event passed
+        setGroupName(event.target.value)
     }
-// return the component that allows setting title input
+// return the component that allows setting title input, it changes the name state when typing is detected
     return(
         <div style={titleWrapperContainer}>
-            <p>Channel Name</p>
-            <input value={channelName} onChange={detectChange} placeholder="Channel-Name (No blanks allowed)" />
-            <p>Add Members</p>
+            <p>Group Name</p>
+            <input value={groupName} 
+            placeholder="New Group-Name: (No blanks allowed!)" 
+            onChange={detectChange} 
+            />
+            <p>Add Users to Group</p>
         </div>
     )
 }
 
 
-// Function to facilitate channel creation
+// Component to facilitate channel creation
 function CreateChannel({createType, setNewChannel}){
-    // State for name of the selected channel
-    const [channelName, setChannelName] = useState('')
+    // State for name of the selected channel default is left blank by default
+    const [groupName, setGroupName] = useState('')
     // Retrieve client and set Active channel from chat context via derefrencing
     const {client, setActiveChannel} = useChatContext();
     // State for users to add to group. Includes current user by default
-    const [checkedUsers, setCheckedUsers] = useState([client.userID || ''])
+    const [checkedUsers, setCheckedUsers] = useState([client.userID])
     //submit function to stream chat for channel creation.
     async function SubmitChannel (e){
+        console.log(e)
+        //We must prevent page reset
         e.preventDefault()
 
         try {
+
             // Create new group with these fields
-            var newGroup = await client.channel(createType, channelName, {
-                name: channelName, members: checkedUsers
+            var newGroup = await client.channel(createType, groupName, 
+                {
+                name: groupName, members: checkedUsers
             })
             // loads initial channel state, watches for changes
             await newGroup.watch();
             // reset states
-            setChannelName('')
+            setCheckedUsers([])
+            setGroupName('')
             setNewChannel(false)
             setCheckedUsers([client.userID])
+            // Set the active channel, to the channel we just created
             setActiveChannel(newGroup)
-        } catch(error){
+        } 
+        catch(e){
             console.log()
         }
     }
-    // Layout of components for create channel page.
-    // button to close channel, 
-    // if team creation, have field for team name
+    // Layout of components for create channel page. We render the correct title, the correct buttons
+    // We render the input if not DM, we render our userlist component with the function to set
+    // an array of users corresponding to checks(inside UserList) FInally we have a submit button
+    // to create the new channel
     return (
         <div style={createContainer}>
             <div style={createHeader}>
-                <p>
-                    {createType === 'team' ? 'Create a new Group' : 'send direct message'}
-                </p>
-                <CloseCreate setNewChannel={setNewChannel}/>
+                <span>
+                    {createType === 'team' ? 'Create a new Group' : 'Send a user messages'}
+                </span>
+                {/* We want to pass the close creation button to the function to change create states */}
+                <CloseCreate 
+                setNewChannel={setNewChannel}
+                />
             </div>
-            {createType === 'team' && <ChannelNameInput channelName={channelName} setChannelName={setChannelName}/>}
+            {/* There is no input for direct messages, so we detect such and render or do not the Name Field */}
+            {createType === 'team' && 
+            <NameField groupName={groupName} 
+            setGroupName={setGroupName}/>}
             <UserList setCheckedUsers={setCheckedUsers}  />
+                {/* Submit button wrapper, onclick is submission of a new channel (create and render group w fields) */}
             <div style={buttonWrapper} onClick={SubmitChannel}>
                 <p style={buttonStyle}>
-                    {createType=== 'team' ? 'Create Channel' : 'Create Message'}
-
+                    Submit
                 </p>
             </div>
         </div>

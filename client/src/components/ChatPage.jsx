@@ -12,25 +12,6 @@ var channelStyle = {
     width: "100%",
   };
 
-  // Chat history style
-var EmptyChannelStyle = {
-    display: "flex",
-    height: "100%",
-    flexDirection: "column",
-  };
-// for previous history messages
-  var EmptyChannelParagraphStyle = {
-    fontFamily: "sans-serif",
-    fontWeight: "bold",
-    fontSize: "18px",
-    marginBottom: "10px"
-  };
-  //send preview style
-  var EmptyChannelParagraphTwoStyle = {
-    fontSize: "14px",
-    lineHeight: "120%",
-    margin: "0",
-  };
 //CHat page component function, has various state change props
 function ChatPage(
     { newChannel, openOptions, setNewChannel, setOpenOptions, createType }
@@ -41,35 +22,28 @@ function ChatPage(
     if(newChannel){
         return(
             <div style={channelStyle}>
-                <CreateChannel createType={createType} setNewChannel={setNewChannel} />
+                <CreateChannel createType={createType} 
+                setNewChannel={setNewChannel} />
             </div>
         )
     }
-//if the option state is true, open the options component
+//if the option state is true, open the options component, pass it the function so we can close menu later
     if(openOptions){
         return(
             <div style={channelStyle}>
-                <ChannelOptions setOpenOptions={setOpenOptions}/>
+                <ChannelOptions 
+                setOpenOptions={setOpenOptions}/>
             </div>
         )
     }
-    //needed for stream api channel component
-    // something to display when no messsages
-    const noState=() => (
-        <div style={EmptyChannelStyle}>
-            <p style={EmptyChannelParagraphStyle}>Chat History Start: </p>
-            <p style={EmptyChannelParagraphTwoStyle}>Send stuff</p>
-        </div>
-    )
-        // Set up chat page, messages for message list provided by message props passed into Built team message
-        // component. Pass options to inner for option opening via title button
+        // Set up chat page, messages for message list provided by message props passed into our own  team message
+        // component. Then render the actual chat page (channel inner) pass the options state function so we can put 
+        // an option button in the header for groups (not there in default component, why we need to make it)
     return (
         <div style={channelStyle}>
-            <Channel
-                EmptyStateIndicator={noState}
-                Message={(messageProps, i) => <TeamMessage key={i} {...messageProps} />}
-            >
-                <ChannelInner setOpenOptions={setOpenOptions} />
+            <Channel Message={(messageProps) => 
+                <TeamMessage  {...messageProps} />} >
+            <ChannelInner setOpenOptions={setOpenOptions} />
             </Channel >
         </div>
     )

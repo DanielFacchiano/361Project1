@@ -1,23 +1,27 @@
 import React from 'react';
-
-export const AddChannel = ({ setCreateType, setNewChannel, setOpenOptions, setToggleContainer, type }) => (
+//We need to pass the state functions to this button so that can we can set the channel create type, and change the states
+// Open source svg data from svgrepo.com export allows our component to directly interact with the svgs
+export function AddChannel({
+   setCreateType, setNewChannel, setOpenOptions, type 
+  }) { return (
   <svg
-    width='15'
-    height='15'
-    viewBox='0 0 14 14'
+
     cursor='pointer'
-    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 50 60'
+    width='20'
+    height='20'
+    
     onClick={() => {
       setCreateType(type);
       setNewChannel((prevState) => !prevState);
       setOpenOptions(false);
-      if(setToggleContainer) setToggleContainer((prevState) => !prevState) 
-    }}
-  >
+      }}>
     <path
-      d='M7 0C3.13438 0 0 3.13438 0 7C0 10.8656 3.13438 14 7 14C10.8656 14 14 10.8656 14 7C14 3.13438 10.8656 0 7 0ZM11 7.5H7.5V11H6.5V7.5H3V6.5H6.5V3H7.5V6.5H11V7.5Z'
-      fill='white'
-      fillOpacity='0.66'
+    d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M38.5,28H28v11c0,1.104-0.896,2-2,2
+    s-2-0.896-2-2V28H13.5c-1.104,0-2-0.896-2-2s0.896-2,2-2H24V14c0-1.104,0.896-2,2-2s2,0.896,2,2v10h10.5c1.104,0,2,0.896,2,2
+    S39.604,28,38.5,28z"      fill='black'
+    fillOpacity='0.60'
     />
+
   </svg>
-);
+)};
